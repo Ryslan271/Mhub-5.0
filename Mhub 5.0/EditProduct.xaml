@@ -5,42 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mhub_5._0" d:DataContext="{d:DesignInstance Type=local:EditProduct}"
         mc:Ignorable="d"
-        Title="EditProduct" Height="450" Width="350">
+        Title="EditProduct" Height="510" Width="350" Loaded="Window_Loaded">
     <Window.Resources>
         <local:MaterialsConverter x:Key="MaterialsConverter"/>
     </Window.Resources>
-    <Grid VerticalAlignment="Top" Margin="20" x:Name="EditDrid">
+    <Grid VerticalAlignment="Top" Margin="20,20,20,0" x:Name="EditDrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="360*"/>
+            <RowDefinition Height="19*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="5" Grid.ColumnSpan="2">
+        <StackPanel Grid.ColumnSpan="3" Grid.RowSpan="2">
             <Image MaxWidth="100" Source="\Resourse\picture.png" Margin="0 0 0 30"/>
 
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5 10 0 10">
                 <TextBlock Text="id"/>
-                <TextBox Width="170" AcceptsReturn="True" Text="{Binding Path=id}" x:Name="EditId" Margin="10 0 10 0"/>
+                <TextBlock x:Name="IdProduct" MinWidth="170" Text="{Binding Path=id}" Margin="10 0 10 0"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="5 10 0 10">
                 <TextBlock Text="Тип продукта"/>
-                <ComboBox Width="170" x:Name="FilterComponent" Margin="10 0 10 0"/>
+                <ComboBox MinWidth="170" x:Name="TypeProduct" Margin="10 0 10 0" SelectionChanged="TypeProduct_SelectionChanged"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="5 10 0 10">
                 <TextBlock Text="Наименование"/>
-                <TextBox Width="170" AcceptsReturn="True" Text="{Binding Path=Name}" Margin="10 0 10 0"/>
+                <TextBox x:Name="NameEdit" MinWidth="170" AcceptsReturn="True" Text="{Binding Path=Name}" Margin="10 0 10 0"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="5 10 0 10">
                 <TextBlock Text="Минимальная цена"/>
-                <TextBox Width="120" AcceptsReturn="True" Text="{Binding Path=Min}" Margin="10 0 10 0"/>
+                <TextBox x:Name="MinEdit" MinWidth="120" AcceptsReturn="True" Text="{Binding Path=Min}" Margin="10 0 10 0"/>
             </StackPanel>
 
-            <StackPanel HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="0 5 0 10">
+            <StackPanel HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5 5 0 0">
                 <TextBlock Text="Материалы"/>
-                <TextBox Width="250" Height="90" AcceptsReturn="True" Text="{Binding Path={}, Converter={StaticResource MaterialsConverter}}" x:Name="MaterialBox" Margin="0 5 10 0"/>
+                <ListBox x:Name="ListMaterials" ItemsSource="{Binding Path=Materials}" Width="270" Height="90" Margin="0 5 0 0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Name}"/> 
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ComboBox x:Name="MaterialComboBox" SelectionChanged="MaterialComboBox_SelectionChanged"/>
+            </StackPanel>
+            <StackPanel Margin="0 20 0 0">
+                <Button x:Name="SaveEditProdutc" Width="120" Content="Сохранить" Height="20" Grid.Column="1" Grid.Row="1" Click="SaveEditProdutc_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

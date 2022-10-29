@@ -25,9 +25,10 @@ namespace Mhub_5._0
         public static MainWindow Instanse;
         public readonly static MainViewModel main = new MainViewModel();
 
-        public static readonly IEnumerable<Product> DefaultProdutcts = DataBase.DatebaseConection.Product;
-        public static readonly IEnumerable<ProductMaterial> DefaultProdutctsMaterial = DataBase.DatebaseConection.ProductMaterial;
+        public static IEnumerable<Product> DefaultProdutcts { get; private set; } = DataBase.DatebaseConection.Product;
+        public static readonly IEnumerable<ProductMaterial> DefaultProductsMaterial = DataBase.DatebaseConection.ProductMaterial;
         public static readonly IEnumerable<Material> DefaultMaterial = DataBase.DatebaseConection.Material;
+        public static readonly IEnumerable<TypeProduct> DefaultTypeProduct = DataBase.DatebaseConection.TypeProduct;
 
         private static Dictionary<Sorting, string> SortingNames = new Dictionary<Sorting, string>()
         {
@@ -36,6 +37,13 @@ namespace Mhub_5._0
             { Sorting.AscendingCost, "По возрастанию цены" },
             { Sorting.DescendingCost, "По убыванию цены" }
         };
+        enum Sorting
+        {
+            AscendingName,
+            DescendingName,
+            AscendingCost,
+            DescendingCost
+        }
 
         public static readonly List<TypeProduct> ProductTypes = DataBase.DatebaseConection.TypeProduct.ToList();
 
@@ -102,58 +110,40 @@ namespace Mhub_5._0
         }
         #endregion
 
+        #region Основной метод
         public void DoStuff()
         {
             main.Items.Clear();
+
             foreach (var item in Sort(DefaultProdutcts.Where(product => IsFiltred(product) && IsSearched(product))).ToList())
-            {
-                var query = from productMaterial in DefaultProdutctsMaterial
-                            from material in DefaultMaterial
-                            where productMaterial.idProduct == item.id && material.id == productMaterial.idMaterial
-                            select material.Price;
-
-                if (query != null)
-                {
-                    int price = 0;
-
-                    foreach (var pr in query)
-                        price += (int)pr;
-
-                    if (price != 0)
-                        item.Min = price;
-                }
-
                 main.Items.Add(item);
-            }
+
             DataContext = main;
         }
+        #endregion
 
         private void Search_TextChanged(object sender, TextChangedEventArgs e) => DoStuff();
-
-        enum Sorting
-        {
-            AscendingName,
-            DescendingName,
-            AscendingCost,
-            DescendingCost
-        }
 
         private void FilterComponent_SelectionChanged(object sender, SelectionChangedEventArgs e) => DoStuff();
 
         private void SortComponent_SelectionChanged(object sender, SelectionChangedEventArgs e) => DoStuff();
 
+        #region Редактирование продуктаx    
         private void ListProducts_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            foreach (var item in DefaultProdutcts)
-            {
-                if (ListProducts.SelectedItem == item)
-                {
-                    EditProduct.product = item;
-                    break;
-                }
-            }
-            new EditProduct().Show();
+        { 
+            if (ListProducts.SelectedItem != null)
+                new EditProduct(ListProducts.SelectedItem as Product).Show();
         }
+        #endregion
+
+        #region Обновление таблицы
+        public static void RefreshProducts()
+        {
+            DefaultProdutcts = DataBase.DatebaseConection.Product;
+            
+            Instanse.DoStuff();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -310,6 +300,29 @@ namespace Mhub_5._0
         {
             return null;
         }
+    }
+    #endregion
+
+    #region Конвертор стоимости
+    [ValueConversion(typeof(Product), typeof(double))]
+    public class CostConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is Product product == false)
+                return 0;
+            var materialCost = from product_material in DataBase.DatebaseConection.ProductMaterial.ToArray()
+                               where product_material.idProduct == product.id
+                               select new
+                               {
+                                   product_material.Material.Price,
+                                   Count = product_material.Count
+                               };
+
+            return materialCost.Count() == 0 ? $"Минимальная: {product.Min}" : $"С учетом материалов:\n{materialCost.Sum(material => material.Price * material.Count)}";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;
     }
     #endregion
 }

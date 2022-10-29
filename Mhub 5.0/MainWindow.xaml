@@ -12,6 +12,7 @@
     <Window.Resources>
         <local:PagerConverter x:Key="PagerConverter"/>
         <local:MaterialsConverter x:Key="MaterialsConverter"/>
+        <local:CostConverter x:Key="CostConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -48,7 +49,7 @@
                         </StackPanel>
                         <StackPanel Grid.Column="2" Orientation="Vertical">
                             <TextBlock x:Name="descriptionText" Text="Стоимость" FontSize="20"/>
-                            <TextBlock x:Name="countText" Text="{Binding Path=Min}" />
+                            <TextBlock x:Name="countText" Text="{Binding Path={}, Converter={StaticResource CostConverter}}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
