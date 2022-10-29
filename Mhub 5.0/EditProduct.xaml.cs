@@ -22,28 +22,40 @@ namespace Mhub_5._0
     public partial class EditProduct : Window
     {
         public static Product product;
+        public List<TypeProduct> ProductTypes = DataBase.DatebaseConection.TypeProduct.ToList();
         public EditProduct()
         {
             InitializeComponent();
 
+            #region Filter component fill
+            var found = ProductTypes.Find(pt => product.TypeProduct == pt);
+            ProductTypes.Remove(found);
+            ProductTypes.Insert(0, found);
+
+            FilterComponent.SelectedItem = ProductTypes.First();
+            FilterComponent.ItemsSource = ProductTypes;
+            FilterComponent.DisplayMemberPath = "Name";
+            #endregion
+
+
             EditDrid.DataContext = product;
 
-            foreach (var item in MainWindow.DefaultProdutcts)
-            {
-                if (item != product)
-                    continue;
+            //foreach (var item in MainWindow.DefaultProdutcts)
+            //{
+            //    if (item != product)
+            //        continue;
 
-                var quary = from material in MainWindow.DefaultMaterial
-                        from productMaterial in MainWindow.DefaultProdutctsMaterial
-                        where productMaterial.idProduct == product.id 
-                        && material.id == productMaterial.idMaterial
-                        select material;
+            //    var quary = from material in MainWindow.DefaultMaterial
+            //            from productMaterial in MainWindow.DefaultProdutctsMaterial
+            //            where productMaterial.idProduct == product.id 
+            //            && material.id == productMaterial.idMaterial
+            //            select material;
 
-                foreach (var materialText in quary)
-                    MaterialBox.Text += materialText.Name;
+            //    foreach (var materialText in quary)
+            //        MaterialBox.Text += materialText.Name;
 
-                break;
-            }
+            //    break;
+            //}
         }
             
     }

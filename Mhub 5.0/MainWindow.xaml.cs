@@ -37,7 +37,7 @@ namespace Mhub_5._0
             { Sorting.DescendingCost, "По убыванию цены" }
         };
 
-        private List<TypeProduct> ProductTypes = DataBase.DatebaseConection.TypeProduct.ToList();
+        public static readonly List<TypeProduct> ProductTypes = DataBase.DatebaseConection.TypeProduct.ToList();
 
         public MainWindow()
         {
