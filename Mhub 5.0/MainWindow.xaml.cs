@@ -25,7 +25,9 @@ namespace Mhub_5._0
         public static MainWindow Instanse;
         public readonly static MainViewModel main = new MainViewModel();
 
-        public readonly IEnumerable<Product> DefaultProdutcts = DataBase.DatebaseConection.Product;
+        public static readonly IEnumerable<Product> DefaultProdutcts = DataBase.DatebaseConection.Product;
+        public static readonly IEnumerable<ProductMaterial> DefaultProdutctsMaterial = DataBase.DatebaseConection.ProductMaterial;
+        public static readonly IEnumerable<Material> DefaultMaterial = DataBase.DatebaseConection.Material;
 
         private static Dictionary<Sorting, string> SortingNames = new Dictionary<Sorting, string>()
         {
@@ -50,7 +52,7 @@ namespace Mhub_5._0
             TypeProduct defaultValue = new TypeProduct()
             {
                 id = 0,
-                Name = "Ничего"
+                Name = "Все типы"
             };
             ProductTypes.Insert(0, defaultValue);
             FilterComponent.ItemsSource = ProductTypes;
@@ -94,7 +96,7 @@ namespace Mhub_5._0
         private bool IsFiltred(Product product)
         {
             TypeProduct filtredType = (FilterComponent.SelectedItem as TypeProduct);
-            if (filtredType == null || filtredType.Name == "Ничего")
+            if (filtredType == null || filtredType.Name == "Все типы")
                 return true;
             return product.TypeProduct == filtredType;
         }
@@ -104,7 +106,25 @@ namespace Mhub_5._0
         {
             main.Items.Clear();
             foreach (var item in Sort(DefaultProdutcts.Where(product => IsFiltred(product) && IsSearched(product))).ToList())
+            {
+                var query = from productMaterial in DefaultProdutctsMaterial
+                            from material in DefaultMaterial
+                            where productMaterial.idProduct == item.id && material.id == productMaterial.idMaterial
+                            select material.Price;
+
+                if (query != null)
+                {
+                    int price = 0;
+
+                    foreach (var pr in query)
+                        price += (int)pr;
+
+                    if (price != 0)
+                        item.Min = price;
+                }
+
                 main.Items.Add(item);
+            }
             DataContext = main;
         }
 
@@ -121,6 +141,19 @@ namespace Mhub_5._0
         private void FilterComponent_SelectionChanged(object sender, SelectionChangedEventArgs e) => DoStuff();
 
         private void SortComponent_SelectionChanged(object sender, SelectionChangedEventArgs e) => DoStuff();
+
+        private void ListProducts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (var item in DefaultProdutcts)
+            {
+                if (ListProducts.SelectedItem == item)
+                {
+                    EditProduct.product = item;
+                    break;
+                }
+            }
+            new EditProduct().Show();
+        }
     }
 
     /// <summary>
@@ -186,6 +219,8 @@ namespace Mhub_5._0
     /// </summary>
     public class MainViewModel : NotifyPropertyChanged
     {
+        public readonly IEnumerable<Product> DefaultProdutcts = DataBase.DatebaseConection.Product;
+
         private int _itemsPerPage;
         private ObservableCollection<Product> _items;
         private int _page;
@@ -231,8 +266,6 @@ namespace Mhub_5._0
             {
                 Page = page;
             }
-
-            // ((MainWindow.Instanse.Buttons.Items[(MainWindow.Instanse.DataContext as MainViewModel).Page] as Button).Content as TextBlock).TextDecorations = TextDecorations.Underline;
         }));
 
         public MainViewModel()
@@ -243,13 +276,17 @@ namespace Mhub_5._0
             {
                 Items.Add(product);
             }
-            ItemsPerPage = 4;
+            ItemsPerPage = CountPage();
             Page = 1;
             Collection.Filter = item =>
             {
                 int index = Items.IndexOf(item as Product);
                 return index >= (Page - 1) * ItemsPerPage && index < Page * ItemsPerPage;
             };
+        }
+        public int CountPage()
+        {
+            return DefaultProdutcts.Count() < 20 ? 4 : 20;
         }
     }
 
@@ -274,5 +311,5 @@ namespace Mhub_5._0
             return null;
         }
     }
+    #endregion
 }
-#endregion
