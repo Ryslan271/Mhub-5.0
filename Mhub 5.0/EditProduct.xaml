@@ -3,60 +3,67 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Mhub_5._0" d:DataContext="{d:DesignInstance Type=local:EditProduct}"
+        xmlns:local="clr-namespace:Mhub_5._0" d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
-        Title="EditProduct" Height="510" Width="350" Loaded="Window_Loaded">
+        Title="EditProduct" Height="460" Width="350" Loaded="Window_Loaded">
     <Window.Resources>
         <local:MaterialsConverter x:Key="MaterialsConverter"/>
     </Window.Resources>
-    <Grid VerticalAlignment="Top" Margin="20,20,20,0" x:Name="EditDrid">
+    
+    <Grid HorizontalAlignment="Center" Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="360*"/>
-            <RowDefinition Height="19*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.ColumnSpan="3" Grid.RowSpan="2">
-            <Image MaxWidth="100" Source="\Resourse\picture.png" Margin="0 0 0 30"/>
+        <Grid x:Name="MainEditProduct">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Image MaxWidth="90" Source="{Binding Path=Photo}"/>
 
-            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5 10 0 10">
+            <StackPanel Margin="0 5 0 5" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="1">
                 <TextBlock Text="id"/>
-                <TextBlock x:Name="IdProduct" MinWidth="170" Text="{Binding Path=id}" Margin="10 0 10 0"/>
+                <TextBlock Margin="20 0 0 0" x:Name="IdProduct" Text="{Binding Path=id}"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="5 10 0 10">
+            <StackPanel Margin="0 5 0 5" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="2">
                 <TextBlock Text="Тип продукта"/>
                 <ComboBox MinWidth="170" x:Name="TypeProduct" Margin="10 0 10 0" SelectionChanged="TypeProduct_SelectionChanged"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="5 10 0 10">
+            <StackPanel Margin="0 5 0 5" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="3">
                 <TextBlock Text="Наименование"/>
                 <TextBox x:Name="NameEdit" MinWidth="170" AcceptsReturn="True" Text="{Binding Path=Name}" Margin="10 0 10 0"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="5 10 0 10">
+            <StackPanel Margin="0 5 0 5" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="4">
                 <TextBlock Text="Минимальная цена"/>
                 <TextBox x:Name="MinEdit" MinWidth="120" AcceptsReturn="True" Text="{Binding Path=Min}" Margin="10 0 10 0"/>
             </StackPanel>
+        </Grid>
 
-            <StackPanel HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="5 5 0 0">
-                <TextBlock Text="Материалы"/>
-                <ListBox x:Name="ListMaterials" ItemsSource="{Binding Path=Materials}" Width="270" Height="90" Margin="0 5 0 0">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=Name}"/> 
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <ComboBox x:Name="MaterialComboBox" SelectionChanged="MaterialComboBox_SelectionChanged"/>
-            </StackPanel>
-            <StackPanel Margin="0 20 0 0">
-                <Button x:Name="SaveEditProdutc" Width="120" Content="Сохранить" Height="20" Grid.Column="1" Grid.Row="1" Click="SaveEditProdutc_Click"/>
-            </StackPanel>
+        <StackPanel Grid.Row="1" Margin="0 5 0 5" HorizontalAlignment="Left">
+            <TextBlock Text="Материалы"/>
+            <ListBox x:Name="ListMaterials" ItemsSource="{Binding Path=Materials}" Width="270" Height="90" Margin="0 5 0 0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock x:Name="NameMaterial" Text="{Binding Path=material.Name}"/>
+                            <TextBox x:Name="Count" Text="{Binding Path=count}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ComboBox x:Name="MaterialComboBox" SelectionChanged="MaterialComboBox_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel Margin="0 5 0 5" Grid.Row="2">
+            <Button x:Name="SaveEditProdutc" Width="120" Content="Сохранить" Height="20" Grid.Column="1" Grid.Row="1" Click="SaveEditProdutc_Click"/>
         </StackPanel>
     </Grid>
 </Window>

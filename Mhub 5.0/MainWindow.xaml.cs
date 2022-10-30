@@ -56,6 +56,7 @@ namespace Mhub_5._0
             SortComponent.DisplayMemberPath = "Value";
             SortComponent.SelectedItem = SortingNames.ToArray()[0];
             #endregion
+
             #region Filter component fill
             TypeProduct defaultValue = new TypeProduct()
             {
@@ -122,12 +123,6 @@ namespace Mhub_5._0
         }
         #endregion
 
-        private void Search_TextChanged(object sender, TextChangedEventArgs e) => DoStuff();
-
-        private void FilterComponent_SelectionChanged(object sender, SelectionChangedEventArgs e) => DoStuff();
-
-        private void SortComponent_SelectionChanged(object sender, SelectionChangedEventArgs e) => DoStuff();
-
         #region Редактирование продуктаx    
         private void ListProducts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         { 
@@ -144,6 +139,13 @@ namespace Mhub_5._0
             Instanse.DoStuff();
         }
         #endregion
+
+        private void Search_TextChanged(object sender, TextChangedEventArgs e) => DoStuff();
+
+        private void FilterComponent_SelectionChanged(object sender, SelectionChangedEventArgs e) => DoStuff();
+
+        private void SortComponent_SelectionChanged(object sender, SelectionChangedEventArgs e) => DoStuff();
+
     }
 
     /// <summary>

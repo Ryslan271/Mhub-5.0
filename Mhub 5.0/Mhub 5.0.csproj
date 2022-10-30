@@ -174,7 +174,33 @@
       <DependentUpon>LR.edmx</DependentUpon>
       <LastGenOutput>LR.cs</LastGenOutput>
     </Content>
-    <Resource Include="Resourse\picture.png" />
+    <Resource Include="Resourse\paper_0.jpeg" />
+    <Resource Include="Resourse\paper_1.jpeg" />
+    <Resource Include="Resourse\paper_10.jpeg" />
+    <Resource Include="Resourse\paper_11.jpeg" />
+    <Resource Include="Resourse\paper_12.jpeg" />
+    <Resource Include="Resourse\paper_13.jpeg" />
+    <Resource Include="Resourse\paper_14.jpeg" />
+    <Resource Include="Resourse\paper_15.jpeg" />
+    <Resource Include="Resourse\paper_16.jpeg" />
+    <Resource Include="Resourse\paper_17.jpeg" />
+    <Resource Include="Resourse\paper_18.jpeg" />
+    <Resource Include="Resourse\paper_19.jpeg" />
+    <Resource Include="Resourse\paper_2.jpeg" />
+    <Resource Include="Resourse\paper_20.jpeg" />
+    <Resource Include="Resourse\paper_21.jpeg" />
+    <Resource Include="Resourse\paper_22.jpeg" />
+    <Resource Include="Resourse\paper_23.jpeg" />
+    <Resource Include="Resourse\paper_24.jpeg" />
+    <Resource Include="Resourse\paper_25.jpeg" />
+    <Resource Include="Resourse\paper_3.jpeg" />
+    <Resource Include="Resourse\paper_4.jpeg" />
+    <Resource Include="Resourse\paper_5.jpeg" />
+    <Resource Include="Resourse\paper_6.jpeg" />
+    <Resource Include="Resourse\paper_7.jpeg" />
+    <Resource Include="Resourse\paper_8.jpeg" />
+    <Resource Include="Resourse\paper_9.jpeg" />
+    <Resource Include="Resourse\picture.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

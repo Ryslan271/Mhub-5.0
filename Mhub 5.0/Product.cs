@@ -26,6 +26,7 @@ namespace Mhub_5._0
         public Nullable<int> idTypeProduct { get; set; }
         public Nullable<int> Count { get; set; }
         public Nullable<int> idShop { get; set; }
+        public string Photo { get; set; }
     
         public virtual Shop Shop { get; set; }
         public virtual TypeProduct TypeProduct { get; set; }

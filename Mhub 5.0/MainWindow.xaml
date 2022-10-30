@@ -37,7 +37,7 @@
                             <ColumnDefinition Width="459*"/>
                             <ColumnDefinition Width="131*"/>
                         </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0" x:Name="img" Width="80" Source="Resourse/picture.png" Margin="20 0 0 0"/>
+                        <Image Grid.Column="0" x:Name="img" Width="80" Source="{Binding Path=Photo}" Margin="20 0 0 0"/>
                         <StackPanel Grid.Column="1">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock x:Name="typeText" Text="{Binding Path=TypeProduct.Name}" FontSize="20"/>
